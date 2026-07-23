@@ -3,6 +3,7 @@
 # functions needed for endpoints
 
 # imports
+import models
 
 # register
 # add a new user to the data base
@@ -27,19 +28,25 @@ def usr_logout():
     pass
 
 # files
+# Retrieve the files with in the users file system
+# get all the file ids that the user owns
 def usr_files():
     pass
 
 # File augmentation
 # download
+# take the contents and download it to the local machine
 def file_download():
     pass
 
 # upload
+# creating a new file class instance
+# give it a file_id and owner_id (USER.user_id)
 def file_upload():
     pass
 
 # delete
+# Remove that file instance from existance
 def file_delete():
     pass
 
