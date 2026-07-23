@@ -1,6 +1,10 @@
 # endpoints.py
 
 # imports
+from fastapi import APIRouter
+
+# application instance
+router = APIRouter()
 
 # Create an account
 # POST Method
