@@ -1,7 +1,7 @@
 # endpoints.py
 
 # imports
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlmodel import Session
 from app.database.database import get_session
 from app.api import file_helper
@@ -52,6 +52,15 @@ def login(username: str, password: str, session: Session = Depends(get_session))
 # Upload a file
 # POST Method
 # /files/upload
+@router.post("/files/upload")
+def upload_file(file: UploadFile = File(...), owner_id: str = "", session: Session = Depends(get_session)):
+    new_file = file_helper.file_upload(file, owner_id, session)
+
+    return {
+        "file_id": new_file.file_id,
+        "original_filename": new_file.original_filename,
+        "size_bytes": new_file.size_bytes
+    }
 
 # delete a file
 # DELETE Method

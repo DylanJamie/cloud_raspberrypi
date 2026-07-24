@@ -5,7 +5,13 @@
 # imports
 from sqlmodel import Session, select
 from passlib.context import CryptContext
-from app.api.models import USER
+from app.api.models import USER, FILE
+import hashlib
+import os
+from pathlib import Path
+
+# Create base folder for all uploaded files
+STORAGE_DIR = Path("storage")
 
 # Password Encryption
 # using bcrypt we can hash a little longer which protects us from attackers
@@ -80,8 +86,42 @@ def file_download():
 # upload
 # creating a new file class instance
 # give it a file_id and owner_id (USER.user_id)
-def file_upload():
-    pass
+def file_upload(file, owner_id: str, session: Session):
+    # we need to calculate the size of the file before it gets uploaded
+    # we can use len() to measure it
+    contents = file.file.read()
+    size_bytes = len(contents)
+
+    # hash the file to encrypt it (one way not reversable)
+    file_hash = hashlib.sha256(contents).hexdigest()
+
+    # Create the new file metadata row first so we get a file_id via uuid to name the file with
+    new_file = FILE(
+        owner_id=owner_id,
+        original_filename=file.filename,
+        storage_path="", # we can fill in the blank once we have a file_id
+        content_type=file.content_type,
+        file_hash=file_hash,
+        size_bytes=size_bytes,
+    )
+    
+    # Now we can build the path on the disk using the generated file id
+    user_folder = STORAGE_DIR / owner_id
+    user_folder.mkdir(parents=True, exist_ok=True)
+    storage_path = user_folder / new_file.file_id
+    new_file.storage_path = str(storage_path)
+
+    # Actually write the bytes to disk
+    with open(storage_path, "wb") as f:
+        f.write(contents)
+
+    # Now save the metadata toe to the data
+    session.add(new_file)
+    session.commit()
+    session.refresh(new_file)
+
+    return new_file
+    
 
 # delete
 # Remove that file instance from existance
