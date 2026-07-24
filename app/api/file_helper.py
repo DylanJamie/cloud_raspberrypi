@@ -5,7 +5,7 @@
 # imports
 from sqlmodel import Session, select
 from passlib.context import CryptContext
-from app.api.models import USER, FILE
+from app.api.models import USER, FILE, SESSION
 import hashlib
 import os
 from pathlib import Path
@@ -47,6 +47,16 @@ def usr_register(username: str, password: str, session: Session):
     session.refresh(new_user)
     return new_user
 
+# Creating a session when ever a user logs in
+# add the session to a new table within the database this will keep track of all the users that are logged in
+def create_session(user_id: str, session: Session):
+    new_session = SESSION(user_id=user_id)
+    session.add(new_session)
+    session.commit()
+    session.refresh(new_session)
+    
+    return new_session
+
 # login
 # Grab and varify the user credentials
 # First check to see if the user exists
@@ -68,14 +78,19 @@ def usr_login(username: str, password: str, session: Session):
     
 # logout
 # end session for user_id thats logged in
-def usr_logout():
-    pass
+def usr_logout(session_id: str, session: Session):
+    existing_session = session.get(SESSION, session_id)
+    if existing_session:
+        session.delete(existing_session)
+        session.commit()
 
 # files
 # Retrieve the files with in the users file system
 # get all the file ids that the user owns
-def usr_files():
-    pass
+def usr_files(owner_id: str, session: Session):
+    files = session.exec(select(FILE).where(FILE.owner_id == owner_id)).all()
+    return files
+    
 
 # File augmentation
 # download
@@ -122,7 +137,6 @@ def file_upload(file, owner_id: str, session: Session):
 
     return new_file
     
-
 # delete
 # Remove that file instance from existance
 def file_delete():
