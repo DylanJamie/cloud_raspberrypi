@@ -2,6 +2,7 @@
 
 # imports
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Cookie, Response
+from fastapi.responses import FileResponse
 from sqlmodel import Session
 from app.database.database import get_session
 from app.api import file_helper
@@ -75,8 +76,20 @@ def files(owner_id: str, session: Session = Depends(get_session)):
 # download a file
 # GET method
 # /files/{file_id}/download
+@router.get("/files/{file_id}/download")
+def download_file(file_id: str, owner_id: str, session: Session = Depends(get_session)):
+    file_record = file_helper.file_download(file_id, owner_id, session)
 
-# Upload a file
+    if file_record is None:
+        raise HTTPException(status_code=404, detail="File not found")
+
+    return FileResponse(
+        path=file_record.storage_path,
+        filename=file_record.original_filename,   # this is what the browser will suggest as the save-name
+        media_type=file_record.content_type,
+    )
+
+# Upload a file #### IF NO USER ID THAN THROW AN ERROR
 # POST Method
 # /files/upload
 @router.post("/files/upload")

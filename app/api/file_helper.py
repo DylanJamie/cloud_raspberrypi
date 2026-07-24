@@ -95,8 +95,17 @@ def usr_files(owner_id: str, session: Session):
 # File augmentation
 # download
 # take the contents and download it to the local machine
-def file_download():
-    pass
+def file_download(file_id: str, owner_id: str, session: Session):
+    existing_file = session.get(FILE, file_id)
+
+    if existing_file is None:
+        return None  # endpoint -> 404
+
+    # Same ownership check as delete don't let people download others' files
+    if existing_file.owner_id != owner_id:
+        return None  # endpoint -> 404 
+
+    return existing_file
 
 # upload
 # creating a new file class instance
