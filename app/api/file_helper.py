@@ -57,6 +57,14 @@ def create_session(user_id: str, session: Session):
     
     return new_session
 
+# Given a session id from a cookie. Return the logged in users user_id or None
+def get_user_from_session(session_id: str, session: Session):
+    existing_session = session.get(SESSION, session_id)
+    if existing_session is None:
+        return None
+    
+    return existing_session.user_id
+
 # login
 # Grab and varify the user credentials
 # First check to see if the user exists

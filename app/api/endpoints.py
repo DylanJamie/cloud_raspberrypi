@@ -10,6 +10,17 @@ from app.api import file_helper
 # application instance
 router = APIRouter()
 
+# Get the current user for login
+def get_current_user(session_id: str = Cookie(default=None), session: Session = Depends(get_session)):
+    if session_id is None:
+        raise HTTPException(status_code=401, detail="Not logged in")
+
+    user_id = file_helper.get_user_from_session(session_id, session)
+    if user_id is None:
+        raise HTTPException(status_code=401, detail="Invalid or expired session")
+
+    return user_id
+
 # Create an account
 # POST Method
 # /register
@@ -59,7 +70,7 @@ def logout(response: Response, session_id: str = Cookie(default=None), session: 
 # GET Method
 # /files
 @router.get("/files")
-def files(owner_id: str, session: Session = Depends(get_session)):
+def files(owner_id: str = Depends(get_current_user), session: Session = Depends(get_session)):
     files = file_helper.usr_files(owner_id, session)
 
     return [
@@ -77,7 +88,7 @@ def files(owner_id: str, session: Session = Depends(get_session)):
 # GET method
 # /files/{file_id}/download
 @router.get("/files/{file_id}/download")
-def download_file(file_id: str, owner_id: str, session: Session = Depends(get_session)):
+def download_file(file_id: str, owner_id: str = Depends(get_current_user), session: Session = Depends(get_session)):
     file_record = file_helper.file_download(file_id, owner_id, session)
 
     if file_record is None:
@@ -93,7 +104,7 @@ def download_file(file_id: str, owner_id: str, session: Session = Depends(get_se
 # POST Method
 # /files/upload
 @router.post("/files/upload")
-def upload_file(file: UploadFile = File(...), owner_id: str = "", session: Session = Depends(get_session)):
+def upload_file(file: UploadFile = File(...), owner_id: str = Depends(get_current_user), session: Session = Depends(get_session)):
     new_file = file_helper.file_upload(file, owner_id, session)
 
     return {
@@ -106,14 +117,13 @@ def upload_file(file: UploadFile = File(...), owner_id: str = "", session: Sessi
 # DELETE Method
 # /files/delete
 @router.delete("/files/delete")
-def delete_file(file_id: str, owner_id: str, session: Session = Depends(get_session)):
+def delete_file(file_id: str, owner_id: str = Depends(get_current_user), session: Session = Depends(get_session)):
     deleted = file_helper.file_delete(file_id, owner_id, session)
 
     if deleted is None:
         raise HTTPException(status_code=404, detail="File not Found")
 
     return {"message" : "file deleted", "file_id": deleted.file_id}
-    
 
 # confirm server is alive
 # /GET Method
