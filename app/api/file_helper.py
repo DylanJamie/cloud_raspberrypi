@@ -139,6 +139,20 @@ def file_upload(file, owner_id: str, session: Session):
     
 # delete
 # Remove that file instance from existance
-def file_delete():
-    pass
+def file_delete(file_id: str, owner_id: str, session: Session):
+    existing_file = session.get(FILE, file_id)
 
+    if existing_file is None:
+        return None
+
+    # Make sure the file belongs to the person that is trying to delete it
+    if existing_file.owner_id != owner_id:
+        return None
+
+    # Delete the actual bytes on the disk as well
+    Path(existing_file.storage_path).unlink(missing_ok=True)
+    
+    session.delete(existing_file)
+    session.commit()
+    
+    return existing_file

@@ -92,6 +92,15 @@ def upload_file(file: UploadFile = File(...), owner_id: str = "", session: Sessi
 # delete a file
 # DELETE Method
 # /files/delete
+@router.delete("/files/delete")
+def delete_file(file_id: str, owner_id: str, session: Session = Depends(get_session)):
+    deleted = file_helper.file_delete(file_id, owner_id, session)
+
+    if deleted is None:
+        raise HTTPException(status_code=404, detail="File not Found")
+
+    return {"message" : "file deleted", "file_id": deleted.file_id}
+    
 
 # confirm server is alive
 # /GET Method
