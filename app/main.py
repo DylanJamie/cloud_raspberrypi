@@ -2,6 +2,7 @@
 
 # imports
 from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse
 from app.api import endpoints
 from app.database.database import init_db
 
@@ -18,6 +19,6 @@ app.include_router(endpoints.router)
 # Endpoint for basic message
 @app.get("/")
 async def root():
-    return {"message": "Hello World"} 
+    return FileResponse("app/templates/index.html") 
 
 
