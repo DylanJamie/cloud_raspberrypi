@@ -1,0 +1,222 @@
+/* ============================================
+   Server_Cloud — dashboard
+   Same palette as the login page, applied to a
+   functional layout instead of a floating card.
+   ============================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --night: #201530;
+  --dusk-rose: #5a3448;
+  --burnt: #c9612f;
+  --amber: #f5a623;
+  --deep-amber: #d9642b;
+  --cream: #fffbf2;
+  --ink: #3a2a1e;
+  --ink-muted: #9c8770;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Manrope", system-ui, sans-serif;
+  color: var(--ink);
+}
+
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, var(--night) 0%, var(--dusk-rose) 45%, var(--burnt) 100%);
+}
+
+/* ---------- Header ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+}
+
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--cream);
+}
+
+.wordmark__glyph {
+  font-size: 24px;
+}
+
+.wordmark__text {
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 22px;
+}
+
+.wordmark__underscore {
+  color: var(--amber);
+}
+
+/* ---------- Layout ---------- */
+
+.content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.panel {
+  background: var(--cream);
+  border-radius: 24px;
+  padding: 28px 30px;
+}
+
+.panel h2 {
+  margin: 0 0 18px;
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--ink);
+}
+
+/* ---------- Upload form ---------- */
+
+.upload-form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.upload-form input[type="file"] {
+  flex: 1;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+
+.status-text {
+  margin: 14px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-muted);
+}
+
+.status-text.status-text--error {
+  color: #b3401f;
+}
+
+.status-text.status-text--success {
+  color: #3f7a4a;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--night);
+  background: linear-gradient(180deg, var(--amber), var(--deep-amber));
+  border: none;
+  border-radius: 12px;
+  padding: 11px 20px;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn--ghost {
+  background: rgba(255, 251, 242, 0.12);
+  color: var(--cream);
+  box-shadow: none;
+}
+
+.btn--small {
+  padding: 7px 14px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+
+.btn--danger {
+  background: none;
+  color: #b3401f;
+  border: 1.5px solid #e3b6a3;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* ---------- File list ---------- */
+
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  background: #fffefb;
+  border: 1.5px solid #ecdfc9;
+  border-radius: 14px;
+}
+
+.file-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0; /* lets the filename truncate instead of overflowing */
+}
+
+.file-row__name {
+  font-weight: 600;
+  font-size: 14.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-row__meta {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+}
+
+.file-row__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.file-row__actions a {
+  text-decoration: none;
+}
+
+.empty-state {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0;
+}

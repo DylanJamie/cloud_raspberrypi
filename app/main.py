@@ -2,7 +2,7 @@
 
 # imports
 from fastapi import FastAPI, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from app.api import endpoints
 from app.database.database import init_db
@@ -23,6 +23,14 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # Endpoint for basic message
 @app.get("/")
 async def root():
-    return FileResponse("app/templates/index.html") 
+    return RedirectResponse(url="/login")
 
+# Get the login HTML file
+@app.get("/login")
+async def login_html_page():
+    return FileResponse("app/templates/login.html")
 
+# Get the dashboard HTML file
+@app.get("/dashboard")
+async def dashboard_html_page():
+    return FileResponse("app/templates/dashboard.html")
