@@ -127,12 +127,14 @@ body {
   align-items: center;
   justify-content: center;
   padding: 48px 20px 32px;
-  gap: 36px;
+  gap: 90px;
 }
 
 /* ---------- Wordmark ---------- */
 
 .wordmark {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 10px;
