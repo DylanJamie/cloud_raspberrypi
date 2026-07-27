@@ -1,0 +1,342 @@
+/* ============================================
+   Server_Cloud — login page
+   Palette:
+     --night        #201530  deep dusk indigo (sky top)
+     --dusk-rose     #5A3448  sky transition
+     --burnt         #C9612F  sky horizon
+     --amber         #F5A623  primary accent / sun
+     --deep-amber    #D9642B  hover / pressed accent
+     --cream         #FFFBF2  cloud body
+     --ink           #3A2A1E  primary text (on cream)
+     --ink-muted     #9C8770  secondary text (on cream)
+   Type:
+     Display  — Fraunces (wordmark, headline)
+     Body/UI  — Manrope (labels, inputs, buttons, footnote)
+   ============================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --night: #201530;
+  --dusk-rose: #5a3448;
+  --burnt: #c9612f;
+  --amber: #f5a623;
+  --deep-amber: #d9642b;
+  --cream: #fffbf2;
+  --ink: #3a2a1e;
+  --ink-muted: #9c8770;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Manrope", system-ui, sans-serif;
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ---------- Sky background ---------- */
+
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(
+    180deg,
+    var(--night) 0%,
+    var(--dusk-rose) 38%,
+    var(--burnt) 68%,
+    var(--amber) 100%
+  );
+}
+
+.sun {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: 520px;
+  height: 520px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 226, 163, 0.85) 0%,
+    rgba(245, 166, 35, 0.45) 35%,
+    rgba(245, 166, 35, 0) 70%
+  );
+  filter: blur(2px);
+}
+
+/* soft decorative background clouds, purely atmospheric */
+.drift {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 251, 242, 0.14);
+  filter: blur(1px);
+}
+
+.drift--a {
+  width: 220px;
+  height: 70px;
+  top: 14%;
+  left: -10%;
+  animation: driftAcross 46s linear infinite;
+}
+
+.drift--b {
+  width: 160px;
+  height: 54px;
+  top: 26%;
+  left: -14%;
+  background: rgba(255, 251, 242, 0.1);
+  animation: driftAcross 62s linear infinite;
+  animation-delay: -20s;
+}
+
+.drift--c {
+  width: 130px;
+  height: 44px;
+  top: 40%;
+  left: -12%;
+  background: rgba(255, 251, 242, 0.08);
+  animation: driftAcross 54s linear infinite;
+  animation-delay: -8s;
+}
+
+@keyframes driftAcross {
+  from { transform: translateX(0); }
+  to   { transform: translateX(130vw); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drift { animation: none; }
+  .cloud { animation: none !important; }
+}
+
+/* ---------- Page stage ---------- */
+
+.stage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px 32px;
+  gap: 90px;
+}
+
+/* ---------- Wordmark ---------- */
+
+.wordmark {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--cream);
+}
+
+.wordmark__glyph {
+  font-size: 30px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.25));
+}
+
+.wordmark__text {
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: 0.01em;
+}
+
+.wordmark__underscore {
+  color: var(--amber);
+}
+
+/* ---------- The cloud itself ---------- */
+
+.cloud-shadow {
+  filter: drop-shadow(0 26px 40px rgba(32, 15, 10, 0.35));
+  animation: bob 7s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-9px); }
+}
+
+.cloud {
+  position: relative;
+  width: min(420px, 88vw);
+  background: var(--cream);
+  border-radius: 42px;
+  padding: 56px 38px 40px;
+}
+
+/* puffs merge seamlessly with .cloud because they share its exact
+   background color and have no border/shadow of their own —
+   the visible silhouette is the union of all shapes, and the single
+   drop-shadow on .cloud-shadow wraps that whole union at once. */
+.cloud__puff {
+  position: absolute;
+  background: var(--cream);
+  border-radius: 50%;
+}
+
+.cloud__puff--1 { width: 108px; height: 108px; top: -46px;  left: 6%; }
+.cloud__puff--2 { width: 150px; height: 150px; top: -74px;  left: 26%; }
+.cloud__puff--3 { width: 120px; height: 120px; top: -52px;  left: 58%; }
+.cloud__puff--4 { width: 92px;  height: 92px;  top: -18px;  right: -30px; }
+.cloud__puff--5 { width: 92px;  height: 92px;  top: -18px;  left: -30px; }
+
+@media (max-width: 480px) {
+  .cloud__puff--1 { width: 84px;  height: 84px;  top: -34px; }
+  .cloud__puff--2 { width: 118px; height: 118px; top: -58px; }
+  .cloud__puff--3 { width: 92px;  height: 92px;  top: -38px; }
+  .cloud__puff--4 { width: 70px;  height: 70px;  top: -12px; right: -22px; }
+  .cloud__puff--5 { width: 70px;  height: 70px;  top: -12px; left: -22px; }
+}
+
+/* ---------- Form contents ---------- */
+
+.cloud__form {
+  position: relative;
+  z-index: 1; /* sits above the puffs */
+  display: flex;
+  flex-direction: column;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--deep-amber);
+}
+
+h1 {
+  margin: 0 0 26px;
+  font-family: "Fraunces", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 30px;
+  color: var(--ink);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 18px;
+}
+
+.field__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.field input {
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 13px 15px;
+  border: 1.5px solid #ecdfc9;
+  border-radius: 14px;
+  background: #fffefb;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input::placeholder {
+  color: #c7b8a2;
+}
+
+.field input:focus-visible {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.18);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.remember input {
+  accent-color: var(--amber);
+}
+
+.link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--deep-amber);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.link:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--night);
+  background: linear-gradient(180deg, var(--amber), var(--deep-amber));
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(217, 100, 43, 0.28);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 24px rgba(217, 100, 43, 0.34);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 14px rgba(217, 100, 43, 0.28);
+}
+
+.switch {
+  margin: 20px 0 0;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--ink-muted);
+}
+
+/* ---------- Footnote ---------- */
+
+.footnote {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 251, 242, 0.65);
+  text-align: center;
+}

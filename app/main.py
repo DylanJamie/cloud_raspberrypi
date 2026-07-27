@@ -34,3 +34,14 @@ async def login_html_page():
 @app.get("/dashboard")
 async def dashboard_html_page():
     return FileResponse("app/templates/dashboard.html")
+
+# Get the dashboard when you click on the forget pass word button
+@app.get("/forgot_pass")
+async def forgot_pass_html_page():
+    return FileResponse("app/templates/forgot_pass.html")
+
+# Get the dashboard when you click on the Create Account button
+@app.get("/create_account")
+async def create_account_html_page():
+    return FileResponse("app/templates/create_account.html")
+
