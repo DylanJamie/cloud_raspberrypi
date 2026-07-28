@@ -27,7 +27,7 @@
 
       <div class="cloud-shadow">
         <div class="cloud">
-	  <form class="cloud__form" action="">
+	  <form class="cloud__form" id="createAccountForm" action="">
 	    <h1>Create New Account</h1>
 	    <label class="field">
               <span class="field__label">Username</span>
@@ -49,15 +49,17 @@
 	      <input type="password" id="confirm_password" name="confirm_password" placeholder="******" autocomplete="confirm-password" required>
              </label>
 
-	     <button type="submit" class="btn">Back</button>
-	     <button type="submit" class="btn">Confirm</button>
-	     
+	     <div class="button-row">
+	       <a class="btn btn--ghost" href="/login">Back</a>
+	       <button type="submit" class="btn" id="confirmBtn">Confirm</button>
+	     </div>
+	       
 	    </form>
 
 	</div>
       </div>
       
-      
+    </main>      
   </body>
 </html>
 

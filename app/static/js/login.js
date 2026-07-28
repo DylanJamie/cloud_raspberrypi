@@ -12,10 +12,10 @@ document.querySelector(".cloud__form").addEventListener("submit", async (event) 
     const password = document.getElementById("password").value;
 
     // wait for the response and fetch the log in username and password from the data base, encrypt/decrypt it and validate the post method
-        const response = await fetch(`/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+    const response = await fetch(`/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
         method: "POST",
         credentials: "include", // required so the session cookie actually gets stored
-	});
+    });
 
     // if the response worked and is true show the user dashboard other wise show log in failed pop up
     if (response.ok) {
@@ -25,4 +25,4 @@ document.querySelector(".cloud__form").addEventListener("submit", async (event) 
 	alert("Login failed - check your username and password.");
     }
 });
-	
+

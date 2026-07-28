@@ -127,7 +127,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 48px 20px 32px;
-  gap: 90px;
+  gap: 40px;
 }
 
 /* ---------- Wordmark ---------- */
@@ -301,7 +301,9 @@ h1 {
   outline-offset: 2px;
 }
 
-.btn {
+.button-row .btn {
+  text-align: center;
+  flex: 1;
   font-family: inherit;
   font-size: 15.5px;
   font-weight: 700;
@@ -330,6 +332,21 @@ h1 {
   text-align: center;
   font-size: 13.5px;
   color: var(--ink-muted);
+}
+
+/* this will be for the back and Confirm to be next to one another*/
+.button-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.btn--small {
+  padding: 10px;
+  font-size: 13.5px;
+  border-radius: 11px;
+  box-shadow: none;
 }
 
 /* ---------- Footnote ---------- */
