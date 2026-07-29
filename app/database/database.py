@@ -4,7 +4,7 @@
 from sqlmodel import SQLModel, Session, create_engine
 
 # URL for the database
-DATABASE_URL = "sqlite:///./cloud.db"
+DATABASE_URL = "sqlite:////app/data/cloud.db"
 
 # create and start the engine for the database
 engine = create_engine(DATABASE_URL, echo=True, connect_args={"check_same_thread": False})

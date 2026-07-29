@@ -1,0 +1,11 @@
+# docker-compose.yml
+services:
+  cloud_raspberrypi:
+    build: .
+    container_name: cloud_raspberrypi
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data          # persists your SQLite database file
+      - ./storage:/app/storage    # persists uploaded files
