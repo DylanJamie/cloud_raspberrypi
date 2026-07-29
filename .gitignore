@@ -3,3 +3,5 @@ __pycache__/
 plans.txt
 
 test_funct.py
+
+cloudflared.deb
